@@ -1,5 +1,5 @@
 <template>
-
+<transition-group name="fade">
   <div class="single-question" v-for="(question, qi) in questions" :key="question.q"
        v-show="questionsAnswered==qi">
     <div class="question">{{ question.q }}</div>
@@ -9,6 +9,8 @@
 
     </div>
   </div>
+</transition-group>
+
 
 </template>
 <script>
@@ -17,7 +19,7 @@ export default {
   emits: ["answered"],
   methods:{
     selectAnswer(is_correct) {
-        this.$emit('answered')
+        this.$emit('answered', is_correct)
     }
 
   }

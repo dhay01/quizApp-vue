@@ -1,18 +1,23 @@
 <template>
   <div class="ctr">
+
     <div class="questions-ctr">
       <div class="progress">
-        <div class="bar"></div>
-        <div class="status">1 out of 3 questions answered</div>
+        <div class="bar" :style="{width:`${(questionsAnswered/questions.length)*100}%`}"></div>
+        <div class="status">{{ questionsAnswered }} out of {{ questions.length }} questions answered</div>
       </div>
     </div>
 
-    <questions v-if="questionsAnswered < questions.length" :questions="questions"
-               :questions-answered="questionsAnswered"
-               @answered="questionAnswered"/>
-    <results v-else/>
+      <questions
+          v-if="questionsAnswered < questions.length" :questions="questions"
+                 :questions-answered="questionsAnswered"
+                 @answered="questionAnswered"
+      />
+      <results v-else :results="results" :total-correct="totalCorrect"/>
 
-    <button type="button" class="reset-btn">Reset</button>
+
+
+    <button  type="button" @click.prevent="reset" class="reset-btn" v-if="this.questionsAnswered==questions.length">Reset</button>
   </div>
 </template>
 <script>
@@ -112,11 +117,15 @@ export default {
   },
   methods: {
     questionAnswered(is_correct) {
-      if(is_correct){
+      if (is_correct) {
         this.totalCorrect++;
       }
       this.questionsAnswered++;
 
+    },
+    reset(){
+      this.questionsAnswered=0;
+      this.totalCorrect=0;
     }
   }
 
